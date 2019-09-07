@@ -67,7 +67,7 @@
             </v-row>
              <v-layout row wrap ma-4>
               <v-flex xs12>
-                  <h4>Profile</h4>
+                  <h4>Profile: <i>{{mode}}</i></h4>
               </v-flex>
               <v-flex xs12>
                   <v-btn-toggle v-model="mode" mandatory>
