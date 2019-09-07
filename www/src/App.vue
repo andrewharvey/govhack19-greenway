@@ -29,6 +29,14 @@
                         <v-list-item-title>From</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                <v-list-item @click="setTripWaypoint">
+                    <v-list-item-icon>
+                        <v-icon></v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>via</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
                 <v-list-item @click="setTripDestination">
                     <v-list-item-icon>
                         <v-icon>place</v-icon>
@@ -252,6 +260,9 @@ export default {
 
             urlParams.set('mode', mode)
             this.updateUrl()
+        },
+        waypoints: function (waypoints) {
+            this.updateDirections()
         },
         origin: function (origin) {
             this.originMarker
