@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar app dark color="primary" >
       <v-toolbar-title class="headline text-uppercase">
-        <span>Greenway</span>
+        <span class="font-weight-bold">Greenway: </span>
         <span class="font-weight-light">Greater Sydney's Cool and Green Routes</span>
       </v-toolbar-title>
     </v-app-bar>
@@ -29,14 +29,6 @@
                         <v-list-item-title>From</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item @click="setTripWaypoint">
-                    <v-list-item-avatar>
-                        <v-icon>add_circle</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title>Via</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
                 <v-list-item @click="setTripDestination">
                     <v-list-item-icon>
                         <v-icon>place</v-icon>
@@ -48,57 +40,85 @@
             </v-list>
         </v-menu>
         <div id="panel">
-        <v-container>
-            <v-row no-gutters>
-                <v-text-field
-                    v-model="origin"
-                    label="From"
-                    prepend-icon="trip_origin"
-                    solo
-                    ></v-text-field>
-            </v-row>
-            <v-row no-gutters>
-                <v-text-field
-                    v-model="destination"
-                    label="To"
-                    prepend-icon="room"
-                    solo
-                    ></v-text-field>
-            </v-row>
-             <v-layout row wrap ma-4>
-              <v-flex xs12>
-                  <h4>Profile: <i>{{mode}}</i></h4>
-              </v-flex>
-              <v-flex xs12>
-                  <v-btn-toggle v-model="mode" mandatory>
-                      <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                              <v-btn v-on="on" value="car">
-                                  <v-icon>directions_car</v-icon>
-                              </v-btn>
-                          </template>
-                          <span>Driving</span>
-                      </v-tooltip>
-                      <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                              <v-btn v-on="on" value="bicycle">
-                                  <v-icon>directions_bike</v-icon>
-                              </v-btn>
-                          </template>
-                          <span>Cycling</span>
-                      </v-tooltip>
-                      <v-tooltip bottom>
-                          <template v-slot:activator="{ on }">
-                              <v-btn v-on="on" value="foot">
-                                  <v-icon>directions_walk</v-icon>
-                              </v-btn>
-                          </template>
-                          <span>Walking</span>
-                      </v-tooltip>
-                  </v-btn-toggle>
-              </v-flex>
-          </v-layout>
-        </v-container>
+            <v-img src="logo.png"></v-img>
+            <v-container>
+                <v-layout>
+                    <v-row no-gutters>
+                        <v-text-field
+                            v-model="origin"
+                            label="From"
+                            prepend-icon="trip_origin"
+                            solo
+                            ></v-text-field>
+                    </v-row>
+                </v-layout>
+                <v-layout>
+                    <v-row no-gutters>
+                        <v-text-field
+                            v-model="destination"
+                            label="To"
+                            prepend-icon="room"
+                            solo
+                            ></v-text-field>
+                    </v-row>
+                </v-layout>
+                <v-layout row wrap ma-4>
+                    <v-flex xs12>
+                        <h4>Profile: <i>{{mode}}</i></h4>
+                    </v-flex>
+                    <v-flex xs12>
+                        <v-btn-toggle v-model="mode" mandatory>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn v-on="on" value="car">
+                                        <v-icon>directions_car</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Driving</span>
+                            </v-tooltip>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn v-on="on" value="bicycle">
+                                        <v-icon>directions_bike</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Cycling</span>
+                            </v-tooltip>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn v-on="on" value="foot">
+                                        <v-icon>directions_walk</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Walking</span>
+                            </v-tooltip>
+                        </v-btn-toggle>
+                    </v-flex>
+                </v-layout>
+                <v-layout row wrap ma-4>
+                    <v-flex xs12>
+                        <h4>Layers</h4>
+                    </v-flex>
+                    <v-flex xs12>
+                        <v-list>
+                            <v-list-item-group v-model="layer">
+                                <v-list-item
+                                    v-for="(item, i) in layers"
+                                    :key="i"
+                                    :color="item.color"
+                                    >
+                                    <v-list-item-icon>
+                                        <v-icon v-text="item.icon"></v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title v-text="item.text"></v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list-item-group>
+                        </v-list>
+                    </v-flex>
+                </v-layout>
+            </v-container>
         </div>
         <div id="map"></div>
     </v-content>
@@ -127,6 +147,26 @@ export default {
 
         mode: 'foot',
 
+        layer: 0,
+        layers: [
+            {
+                icon: '',
+                text: 'None'
+            },
+            {
+                icon: 'local_florist',
+                key: 'vgecover',
+                text: 'Urban Vegetation Cover',
+                color: 'green'
+            },
+            {
+                icon: 'wb_sunny',
+                key: 'uhi',
+                text: 'Urban Heat Island',
+                color: 'blue'
+            }
+        ],
+
         // show map click menu
         menu: false,
 
@@ -148,9 +188,11 @@ export default {
             container: 'map',
             style: 'mapbox://styles/alantgeo-presales/ck08wklxa1k831cp9izq84duz',
             center: [151.0057, -33.8401],
-            zoom: 10,
+            zoom: 8,
             hash: true
         })
+        this.map.addControl(new mapboxgl.NavigationControl());
+        this.map.addControl(new mapboxgl.GeolocateControl());
         this.map.on('load', this.mapLoaded);
 
         const originSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -225,6 +267,22 @@ export default {
         },
         routes: function (routes) {
             this.map.getSource('routes').setData(routes)
+        },
+        layer: function (layer) {
+            switch (layer) {
+                case 0:
+                    this.map.setLayoutProperty('vegcover', 'visibility', 'none');
+                    this.map.setLayoutProperty('uhi', 'visibility', 'none');
+                    break;
+                case 1:
+                    this.map.setLayoutProperty('vegcover', 'visibility', 'visible');
+                    this.map.setLayoutProperty('uhi', 'visibility', 'none');
+                    break;
+                case 2:
+                    this.map.setLayoutProperty('vegcover', 'visibility', 'none');
+                    this.map.setLayoutProperty('uhi', 'visibility', 'visible');
+                    break;
+            }
         }
     },
     computed: {
@@ -349,7 +407,7 @@ html { overflow-y: auto !important; }
     left: 0;
     height: 100%;
 
-    overflow-y: scroll;
+    overflow-y: overlay;
 }
 #map {
     position: absolute;
