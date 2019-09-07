@@ -73,7 +73,15 @@
                   <v-btn-toggle v-model="mode" mandatory>
                       <v-tooltip bottom>
                           <template v-slot:activator="{ on }">
-                              <v-btn v-on="on" value="cycling">
+                              <v-btn v-on="on" value="car">
+                                  <v-icon>directions_car</v-icon>
+                              </v-btn>
+                          </template>
+                          <span>Driving</span>
+                      </v-tooltip>
+                      <v-tooltip bottom>
+                          <template v-slot:activator="{ on }">
+                              <v-btn v-on="on" value="bicycle">
                                   <v-icon>directions_bike</v-icon>
                               </v-btn>
                           </template>
@@ -81,7 +89,7 @@
                       </v-tooltip>
                       <v-tooltip bottom>
                           <template v-slot:activator="{ on }">
-                              <v-btn v-on="on" value="walking">
+                              <v-btn v-on="on" value="foot">
                                   <v-icon>directions_walk</v-icon>
                               </v-btn>
                           </template>
@@ -117,7 +125,7 @@ export default {
 
         routes: null,
 
-        mode: 'walking',
+        mode: 'foot',
 
         // show map click menu
         menu: false,
@@ -189,6 +197,12 @@ export default {
         })
     },
     watch: {
+        mode: function (mode) {
+            this.updateDirections()
+
+            urlParams.set('mode', mode)
+            this.updateUrl()
+        },
         origin: function (origin) {
             this.originMarker
                 .setLngLat(origin)
@@ -275,7 +289,7 @@ export default {
         updateDirections: function () {
             if (this.origin && this.destination) {
                 console.log(this.coordinatesString)
-                axios.get(`http://greenway.microburbs.com.au:5000/route/v1/foot/${this.coordinatesString}?geometries=geojson`)
+                axios.get(`http://greenway.microburbs.com.au/route/v1/${this.mode}/${this.coordinatesString}?geometries=geojson`)
                     .then((res) => {
                         if (res && res.data && res.data.code && res.data.code === 'Ok' && res.data.routes && res.data.routes.length) {
                             this.routes = {
@@ -292,7 +306,7 @@ export default {
                         console.log(res);
                     })
                     .catch((err) => {
-                        console.log(error);
+                        console.log(err);
                     })
             }
         },
