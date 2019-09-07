@@ -100,6 +100,7 @@
 <script>
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import axios from 'axios';
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -114,7 +115,9 @@ export default {
         destination: null,
         waypoints: [],
 
-        mode: 0,
+        routes: null,
+
+        mode: 'walking',
 
         // show map click menu
         menu: false,
@@ -205,6 +208,16 @@ export default {
 
             urlParams.set('destination', destination.join(','))
             this.updateUrl()
+        },
+        routes: function (routes) {
+            this.map.getSource('routes').setData(routes)
+        }
+    },
+    computed: {
+        coordinatesString: function () {
+            return [this.origin, ...this.waypoints, this.destination].map((coord) => {
+                    return coord.join(',')
+                }).join(';')
         }
     },
     methods: {
@@ -220,6 +233,35 @@ export default {
             if (urlParams.has('destination')) {
                 this.destination = urlParams.get('destination').split(',').map(Number)
             }
+
+            this.map.addSource('routes', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] }
+            })
+            this.map.addLayer({
+                type: 'line',
+                id: 'route-halo',
+                source: 'routes',
+                paint: {
+                    'line-color': '#ffffff',
+                    'line-width': 8
+                },
+                layout: {
+                    'line-join': 'round'
+                }
+            })
+            this.map.addLayer({
+                type: 'line',
+                id: 'route',
+                source: 'routes',
+                paint: {
+                    'line-color': this.$vuetify.theme.themes.light.primary,
+                    'line-width': 4
+                },
+                layout: {
+                    'line-join': 'round'
+                }
+            })
         },
         setTripOrigin: function () {
             this.origin = this.menuLL
@@ -232,7 +274,26 @@ export default {
         },
         updateDirections: function () {
             if (this.origin && this.destination) {
-                this.foo = true
+                console.log(this.coordinatesString)
+                axios.get(`http://greenway.microburbs.com.au:5000/route/v1/foot/${this.coordinatesString}?geometries=geojson`)
+                    .then((res) => {
+                        if (res && res.data && res.data.code && res.data.code === 'Ok' && res.data.routes && res.data.routes.length) {
+                            this.routes = {
+                                type: 'FeatureCollection',
+                                features: res.data.routes.map((route) => {
+                                    return {
+                                        type: 'Feature',
+                                        properties: {},
+                                        geometry: route.geometry
+                                    }
+                                })
+                            }
+                        }
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(error);
+                    })
             }
         },
         contextClick: function (e) {
