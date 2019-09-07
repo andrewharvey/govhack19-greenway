@@ -1,3 +1,11 @@
+download_osm:
+	wget http://download.openstreetmap.fr/extracts/oceania/australia/new_south_wales.osm.pbf
+
+osrm_process:
+	osrm-extract -p profiles/foot.lua new_south_wales.osm.pbf
+	osrm-partition new_south_wales.osrm
+	osrm-customize new_south_wales.osrm
+
 download:
 	wget https://datasets.seed.nsw.gov.au/dataset/97815860-d840-4e67-8f73-1bfc665cb310/resource/6c10132f-8bcc-4b09-bf2a-34314cd6ca33/download/climateuhimmbsua2016.zip
 	wget https://datasets.seed.nsw.gov.au/dataset/888e253e-3b4e-4564-93ba-02f00ad3f2c5/resource/420a894c-b387-4819-8220-eeb501459edf/download/climatevegcovermmbgsr2016.zip
