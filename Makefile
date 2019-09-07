@@ -29,6 +29,7 @@ start_osrm:
 	osrm-routed --port 5000 --algorithm mld new_south_wales-car.osrm
 	osrm-routed --port 5001 --algorithm mld new_south_wales-foot.osrm
 	osrm-routed --port 5002 --algorithm mld new_south_wales-bicycle.osrm
+	osrm-routed --port 5003 --algorithm mld new_south_wales-footcool.osrm
 
 download:
 	wget https://datasets.seed.nsw.gov.au/dataset/97815860-d840-4e67-8f73-1bfc665cb310/resource/6c10132f-8bcc-4b09-bf2a-34314cd6ca33/download/climateuhimmbsua2016.zip
