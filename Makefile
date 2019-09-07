@@ -46,6 +46,12 @@ raster:
 	gdal_rasterize -of GTIFF -co COMPRESS=DEFLATE -tr 0.00005 0.00005 -a v -ot Byte raster/VegCover.shp raster/VegCover.geotiff
 	gdal_translate -of AAIGrid raster/UHI.geotiff raster/UHI.asc
 	gdal_translate -of AAIGrid raster/VegCover.geotiff raster/VegCover.asc
+	head -n 5 < raster/UHI.asc > raster/UHI.head.asc
+	tail -n +6 < raster/UHI.asc > raster/UHI.tail.asc
+	rm -f raster/UHI.asc
+	head -n 5 < raster/VegCover.asc > raster/VegCover.head.asc
+	tail -n +6 < raster/VegCover.asc > raster/VegCover.tail.asc
+	rm -f raster/VegCover.asc
 
 build_www:
 	cd www && yarn run build
