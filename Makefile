@@ -40,8 +40,10 @@ mbtiles:
 
 raster:
 	mkdir -p raster
-	gdal_rasterize -of GTIFF -co COMPRESS=DEFLATE -tr 10 10 -a UHI_16_m data/Shapefile_UHI/UHI_MMB_SUA_2016.shp raster/UHI.geotiff
-	gdal_rasterize -of GTIFF -co COMPRESS=DEFLATE -tr 10 10 -a PerAnyVeg data/Shapefile/VegCover_MMB_GSR_2016.shp raster/VegCover.geotiff
+	ogr2ogr -t_srs 'EPSG:4326' -sql 'SELECT CAST((((UHI_16_m + 10) / 25) * 255) AS INT) AS v, geometry FROM UHI_MMB_SUA_2016' -dialect 'SQLITE' raster/UHI.shp data/Shapefile_UHI/UHI_MMB_SUA_2016.shp
+	ogr2ogr -t_srs 'EPSG:4326' -sql 'SELECT PerAnyVeg AS v FROM VegCover_MMB_GSR_2016' raster/VegCover.shp data/Shapefile/VegCover_MMB_GSR_2016.shp
+	gdal_rasterize -of GTIFF -co COMPRESS=DEFLATE -tr 0.0001 0.0001 -a v -ot Byte raster/UHI.shp raster/UHI.geotiff
+	gdal_rasterize -of GTIFF -co COMPRESS=DEFLATE -tr 0.00005 0.00005 -a v -ot Byte raster/VegCover.shp raster/VegCover.geotiff
 	gdal_translate -of AAIGrid raster/UHI.geotiff raster/UHI.asc
 	gdal_translate -of AAIGrid raster/VegCover.geotiff raster/VegCover.asc
 
