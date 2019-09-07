@@ -18,3 +18,6 @@ raster:
 	gdal_rasterize -of GTIFF -co COMPRESS=DEFLATE -tr 10 10 -a PerAnyVeg data/Shapefile/VegCover_MMB_GSR_2016.shp raster/VegCover.geotiff
 	gdal_translate -of AAIGrid raster/UHI.geotiff raster/UHI.asc
 	gdal_translate -of AAIGrid raster/VegCover.geotiff raster/VegCover.asc
+
+build_www:
+	cd www && yarn run build
