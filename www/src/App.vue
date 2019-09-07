@@ -92,6 +92,14 @@
                                 </template>
                                 <span>Walking</span>
                             </v-tooltip>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn v-on="on" value="footcool">
+                                        <v-icon color="green">directions_walk</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Walking</span>
+                            </v-tooltip>
                         </v-btn-toggle>
                     </v-flex>
                 </v-layout>
@@ -362,6 +370,8 @@ export default {
                             }
                         }
                         console.log(res);
+                        console.log('weight: ', res.data.routes[0].weight)
+                        console.log('duration: ', res.data.routes[0].duration)
                     })
                     .catch((err) => {
                         console.log(err);

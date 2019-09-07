@@ -3,6 +3,7 @@ download_osm:
 	ln -s -T new_south_wales.osm.pbf new_south_wales-car.osm.pbf
 	ln -s -T new_south_wales.osm.pbf new_south_wales-bicycle.osm.pbf
 	ln -s -T new_south_wales.osm.pbf new_south_wales-foot.osm.pbf
+	ln -s -T new_south_wales.osm.pbf new_south_wales-footcool.osm.pbf
 
 osrm_process_car:
 	osrm-extract -p profiles/car.lua new_south_wales-car.osm.pbf
@@ -18,6 +19,11 @@ osrm_process_foot:
 	osrm-extract -p profiles/foot.lua new_south_wales-foot.osm.pbf
 	osrm-partition new_south_wales-foot.osrm
 	osrm-customize new_south_wales-foot.osrm
+
+osrm_process_footcool:
+	osrm-extract -p profiles/footcool.lua new_south_wales-footcool.osm.pbf
+	osrm-partition new_south_wales-footcool.osrm
+	osrm-customize new_south_wales-footcool.osrm
 
 start_osrm:
 	osrm-routed --port 5000 --algorithm mld new_south_wales-car.osrm
