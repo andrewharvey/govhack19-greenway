@@ -141,6 +141,14 @@
                         </v-list>
                     </v-flex>
                 </v-layout>
+                <v-layout row wrap ma-4>
+                    <v-flex xs12 v-if="routeDuration">
+                        <b>Duration: </b>{{Math.round(routeDuration / 60)}} mins
+                    </v-flex>
+                    <v-flex xs12 v-if="routeDistance">
+                        <b>Duration: </b>{{(routeDistance / 1000).toFixed(2)}} km
+                    </v-flex>
+                </v-layout>
             </v-container>
         </div>
         <div id="map"></div>
@@ -316,6 +324,20 @@ export default {
             return [this.origin, ...this.waypoints, this.destination].map((coord) => {
                     return coord.join(',')
                 }).join(';')
+        },
+        routeDistance: function () {
+            if (this.routes && this.routes.features && this.routes.features.length) {
+                return this.routes.features[0].properties.distance
+            } else {
+                return null
+            }
+        },
+        routeDuration: function () {
+            if (this.routes && this.routes.features && this.routes.features.length) {
+                return this.routes.features[0].properties.duration
+            } else {
+                return null
+            }
         }
     },
     methods: {
@@ -385,13 +407,15 @@ export default {
                                 features: res.data.routes.map((route) => {
                                     return {
                                         type: 'Feature',
-                                        properties: {},
+                                        properties: {
+                                            duration: route.duration,
+                                            distance: route.distance
+                                        },
                                         geometry: route.geometry
                                     }
                                 })
                             }
                         }
-                        console.log(res);
                         console.log('weight: ', res.data.routes[0].weight)
                         console.log('duration: ', res.data.routes[0].duration)
                     })
