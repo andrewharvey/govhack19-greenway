@@ -57,7 +57,10 @@
         <div id="panel">
             <v-img src="logo.png"></v-img>
             <v-container>
-                <v-layout>
+                <v-layout mb-2>
+                    <i>Click on the map to select start and end points.</i>
+                </v-layout>
+                <v-layout mb-0>
                     <v-row no-gutters>
                         <v-text-field
                             v-model="origin"
@@ -456,6 +459,10 @@ export default {
 </script>
 <style>
 html { overflow-y: auto !important; }
+
+.v-text-field__details {
+    display: none;
+}
 
 #panel {
     position: absolute;
