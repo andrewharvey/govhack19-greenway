@@ -106,7 +106,7 @@
                                         <v-icon color="green">directions_walk</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Walking</span>
+                                <span>Cool Walking</span>
                             </v-tooltip>
                         </v-btn-toggle>
                     </v-flex>
