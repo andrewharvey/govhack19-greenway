@@ -5,6 +5,13 @@
         <span class="font-weight-bold">Greenway: </span>
         <span class="font-weight-light">Greater Sydney's Cool and Green Routes</span>
       </v-toolbar-title>
+      <div class="flex-grow-1"></div>
+      <v-btn icon href="https://hackerspace.govhack.org/projects/greenway">
+          <v-icon>home</v-icon>
+      </v-btn>
+      <v-btn icon href="https://github.com/andrewharvey/govhack19-greenway">
+          <v-icon>code</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-content>
