@@ -163,7 +163,7 @@ export default {
 
         mode: 'foot',
 
-        layer: 0,
+        layer: 2,
         layers: [
             {
                 icon: '',
@@ -317,6 +317,10 @@ export default {
         },
         mapLoaded: function () {
             this.map.on('contextmenu', this.contextClick)
+            this.map.on('click', this.contextClick)
+
+            this.map.setLayoutProperty('vegcover', 'visibility', 'none');
+            this.map.setLayoutProperty('uhi', 'visibility', 'visible');
 
             if (urlParams.has('origin')) {
                 this.origin = urlParams.get('origin').split(',').map(Number)
