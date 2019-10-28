@@ -2,6 +2,8 @@
 
 GovHack 2019 Entry - Greater Sydney's Cool and Green Routes - https://hackerspace.govhack.org/projects/greenway
 
+Demo: https://www.alantgeo.com.au/demos/govhack19-greenway/ (since this was just a working prototype, the routing services have now been turned off but you can still explore the demo)
+
 ### Normal Pedestrian Routing
 The shortest route, but goes through an urbarn heat island.
 ![](img/Greenway_NormalFoot.png)
